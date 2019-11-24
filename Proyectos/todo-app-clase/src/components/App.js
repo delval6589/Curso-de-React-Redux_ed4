@@ -9,18 +9,18 @@ export default class App extends Component {
 
     this.state = {
       lists: [
-        { name: "Monday" },
-        { name: "Tuesday" },
-        { name: "Wednesday" },
-        { name: "Thursday" },
-        { name: "Friday" },
-        { name: "Saturday" },
-        { name: "Sunday" }
+        { id: 0, title: "Monday" },
+        { id: 1, title: "Tuesday" },
+        { id: 2, title: "Wednesday" },
+        { id: 3, title: "Thursday" },
+        { id: 4, title: "Friday" },
+        { id: 5, title: "Saturday" },
+        { id: 6, title: "Sunday" }
       ]
     };
 
     this.createList = this.createList.bind(this);
-    this.removeList = this.removeList.bind(this);
+    this.handleRemoveList = this.handleRemoveList.bind(this);
   }
 
   render() {
@@ -35,10 +35,10 @@ export default class App extends Component {
         <section className="tdl-main-section">
           {this.state.lists.map((list, idx) => (
             <List
-              key={idx}
-              idx={idx}
-              removeList={ev => this.removeList(idx, ev)}
-              name={list.name}
+              key={list.id}
+              onRemoveList={ev => this.handleRemoveList(list.id, ev)}
+              title={list.title}
+              removeText="X"
             />
           ))}
         </section>
@@ -46,9 +46,10 @@ export default class App extends Component {
     );
   }
 
-  removeList(index) {
+  handleRemoveList(id) {
     let newArr = [...this.state.lists];
-    newArr.splice(index, 1);
+    const listIdx = newArr.findIndex(list => list.id === id);
+    newArr.splice(listIdx, 1);
 
     this.setState({
       lists: newArr
@@ -56,7 +57,8 @@ export default class App extends Component {
   }
 
   createList() {
-    const lists = [...this.state.lists, { name: "New List" }];
+    const id = Math.floor(Math.random() * Date.now());
+    const lists = [...this.state.lists, { id, title: "New List" }];
 
     this.setState({
       lists: lists

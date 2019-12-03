@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 
 // La estructura de archivos nos permite agrupar todos los componentes juntos bajo la misma carpeta
 // Las llaves indican que es un Naming Import, no Default
-import { Header } from './Header';
+import Header from './Header';
 // Un import sin llaves import el export por defecto
 // Se puede nombrar el import List o como se quiera, porque JS si no ve llaves, de cualquier manera importa el default
 import List from './List';
@@ -101,7 +101,7 @@ export default class App extends Component {
     const lists = [...this.state.lists, { id, title: "New List" }];
 
     this.setState({
-      lists: newArr
+      lists
     });
   }
 }

@@ -5,7 +5,7 @@ import '../styles/List.css';
 
 const List = ({
   changeListName = () => {},
-  newListName = "",
+  newListName = () => {},
   submitName = () => {},
   children = "",
   placeholder = `New task on ${children}`,
@@ -52,6 +52,14 @@ const List = ({
     setInputValue("");
   };
 
+  const removeTask = (idx) => {
+    const tasksCopy = [...tasks];
+    tasksCopy.splice(idx, 1);
+    
+    calcPercentage(tasksCopy);
+    setTasks(tasksCopy);
+  }
+
   const onInputChange = (tarea, indice, tareas) => {
     tarea.status = tarea.status ? false : true;
 
@@ -88,6 +96,7 @@ const List = ({
           <Task
             key={task.text}
             checked={task.status}
+            removeTask={() => removeTask(idx)}
             onInpChange={() => onInputChange(task, idx,tasks)}
           >
               {task.text}

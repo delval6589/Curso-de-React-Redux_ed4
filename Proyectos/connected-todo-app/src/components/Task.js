@@ -27,7 +27,8 @@ return (
       {children}
     </label>
     <button
-      className="td-remove_task">
+      className="td-remove_task"
+      onClick={removeTask}>
         x
     </button>
   </div>

@@ -1,66 +1,48 @@
 import React, { Component } from 'react';
-import Header from './Header';
+import { Header } from './Header';
 import List from './List';
+import { connect } from "react-redux";
+import { createNewList, changeListName } from "../state/lists/list-action-creators";
 
 import '../styles/App.css';
 
-export default class App extends Component {
+class App extends Component {
   render() {
     return(
       <>
-        <Header/>
-        <button onClick={this.createList.bind(this)} className="tdl-add_list_button">Create new list</button>
+        <Header>Go For It!</Header>
+        <button onClick={() => this.props.createNewList("New List")} className="tdl-add_list_button">Create new list</button>
         <section className="tdl-main-section">
-          {this.state.lists.map((list, idx, lists) => (
+          {this.props.lists.map((list, idx, lists) => (
             <List
-              newListName={() => this.newListName(idx)}
+              key={list.id}
+              newListName={ev => this.props.changeListName(list.id, ev.target.value)}
               submitName={this.submitName}
-              changeListName={() => this.changeListName(idx)}
+              changeListName={() => this.props.changeListName(list.id, "")}
             >
-              {list}
+              {list.name}
             </List>
           ))}
         </section>
       </>
   )};
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      lists: []
-    }
-
-    this.changeListName = this.changeListName.bind(this);
-  }
-
-  changeListName(index, event) {
-    let newArr = this.state.lists.slice(0);
-    newArr[index] = "";
-
-    this.setState({
-      lists: newArr
-    });
-  }
-
-  newListName(index, event) {
-    let newArr = this.state.lists.slice(0);
-    newArr[index] = event.target.value;
-
-    this.setState({
-      lists: newArr
-    });
-  }
-
   submitName = (event) => {
     if(event.keyCode === 13){ event.target.blur() }
   }
+}
 
-  createList(event) {
-    const newArr = this.state.lists.slice(0);
-    newArr.push("New List")
-
-    this.setState({
-      lists: newArr
-    });
+function mapStateToProps(state) {
+  return {
+    lists: state.lists
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    createNewList: name => dispatch(createNewList(name)),
+    changeListName: (id, newName) => dispatch(changeListName(id, newName))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

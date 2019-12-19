@@ -1,5 +1,7 @@
 import React, { useState, Fragment } from "react";
 
+import "../styles/Task.css";
+
 export const Task = props => {
   const toClassName = classesConfig =>
     Object.entries(classesConfig)
@@ -41,8 +43,14 @@ export const Task = props => {
     endEditing();
   };
 
+  // const backgroundColor = completed ? 'color-green' : 'color-red';
+  const backgroundColor = {
+    backgroundColor: completed ? 'lightgreen' : 'tomato'
+  }
+
   return (
-    <li className="task-row">
+    // <li className={`task-row ${backgroundColor}`}>
+    <li className="task-row" style={backgroundColor}>
       <div className="task-text">
         {editing ? (
           <input
